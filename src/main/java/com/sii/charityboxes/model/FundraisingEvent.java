@@ -12,13 +12,15 @@ public class FundraisingEvent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
     private Currency currency;
     private BigDecimal account;
 
     public FundraisingEvent() {
     }
 
-    public FundraisingEvent(Currency currency, BigDecimal account) {
+    public FundraisingEvent(String name, Currency currency, BigDecimal account) {
+        this.name = name;
         this.currency = currency;
         this.account = account;
     }
@@ -45,6 +47,14 @@ public class FundraisingEvent {
 
     public void setAccount(BigDecimal account) {
         this.account = account;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
