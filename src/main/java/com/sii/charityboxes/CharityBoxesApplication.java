@@ -1,4 +1,4 @@
-package com.sii.charityboxes;
+package com.sii.charityBoxes;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
