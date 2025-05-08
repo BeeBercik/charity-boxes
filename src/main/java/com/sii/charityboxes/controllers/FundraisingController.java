@@ -20,8 +20,8 @@ public class FundraisingController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createFundraisingEvent(@RequestBody FundraisingEventRequest event) {
-        this.eventService.createFundraisingEvent(event);
+    public ResponseEntity<?> createEvent(@RequestBody FundraisingEventRequest event) {
+        this.eventService.createEvent(event);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

@@ -2,6 +2,7 @@ package com.sii.charityBoxes.services;
 
 import com.sii.charityBoxes.dto.CollectionBoxRequest;
 import com.sii.charityBoxes.dto.CollectionBoxResponse;
+import com.sii.charityBoxes.exceptions.CollectionBoxNotFound;
 import com.sii.charityBoxes.model.CollectionBox;
 import com.sii.charityBoxes.model.Currency;
 import com.sii.charityBoxes.repositories.CollectionBoxesRepository;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +24,7 @@ public class CollectionBoxService {
         this.boxRepository = boxRepository;
     }
 
-    public void registerCollectionBox(CollectionBoxRequest boxRequest) {
+    public void registerBox(CollectionBoxRequest boxRequest) {
         HashMap<Currency, BigDecimal> currencies = new HashMap<>();
         for(Currency c : boxRequest.currencies()) {
             currencies.put(c, BigDecimal.ZERO);
@@ -36,11 +36,17 @@ public class CollectionBoxService {
         ));
     }
 
-    public List<CollectionBoxResponse> getCollectionBoxes() {
+    public List<CollectionBoxResponse> getAllBoxes() {
         return this.boxRepository.findAll().stream()
                 .map(this::toResponse)
                 .toList();
 
+    }
+
+    public void unregisterBox(Long id) {
+        CollectionBox box = this.boxRepository.findById(id).orElseThrow(() -> new CollectionBoxNotFound("Collection Box not found"));
+
+        this.boxRepository.delete(box);
     }
 
     public BigDecimal sumBoxAmount(CollectionBox box) {

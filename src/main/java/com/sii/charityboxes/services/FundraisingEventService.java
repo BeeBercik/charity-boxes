@@ -18,7 +18,7 @@ public class FundraisingEventService {
         this.eventRepository = fundraisingEventRepository;
     }
 
-    public void createFundraisingEvent(FundraisingEventRequest eventRequest) {
+    public void createEvent(FundraisingEventRequest eventRequest) {
         this.eventRepository.save(
                 this.fromRequestToEntity(eventRequest)
         );
