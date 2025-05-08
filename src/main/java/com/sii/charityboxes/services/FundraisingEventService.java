@@ -20,16 +20,15 @@ public class FundraisingEventService {
 
     public void createFundraisingEvent(FundraisingEventRequest eventRequest) {
         this.eventRepository.save(
-                this.convertEventRequestToFundraisingEvent(eventRequest)
+                this.fromRequestToEntity(eventRequest)
         );
     }
 
-    public FundraisingEvent convertEventRequestToFundraisingEvent(FundraisingEventRequest eventRequest) {
+    public FundraisingEvent fromRequestToEntity(FundraisingEventRequest eventRequest) {
         return new FundraisingEvent(
                 eventRequest.name(),
                 eventRequest.currency(),
                 BigDecimal.ZERO
         );
     }
-
 }
