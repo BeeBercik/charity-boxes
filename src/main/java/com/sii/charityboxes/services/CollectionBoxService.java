@@ -2,10 +2,13 @@ package com.sii.charityBoxes.services;
 
 import com.sii.charityBoxes.dto.CollectionBoxRequest;
 import com.sii.charityBoxes.dto.CollectionBoxResponse;
-import com.sii.charityBoxes.exceptions.CollectionBoxNotFound;
+import com.sii.charityBoxes.exceptions.CollectionBoxNotFoundException;
+import com.sii.charityBoxes.exceptions.FundraisingEventNotFound;
 import com.sii.charityBoxes.model.CollectionBox;
 import com.sii.charityBoxes.model.Currency;
+import com.sii.charityBoxes.model.FundraisingEvent;
 import com.sii.charityBoxes.repositories.CollectionBoxesRepository;
+import com.sii.charityBoxes.repositories.FundraisingEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +21,12 @@ import java.util.Map;
 public class CollectionBoxService {
 
     private final CollectionBoxesRepository boxRepository;
+    private final FundraisingEventRepository eventRepository;
 
     @Autowired
-    public CollectionBoxService(CollectionBoxesRepository boxRepository) {
+    public CollectionBoxService(CollectionBoxesRepository boxRepository, FundraisingEventRepository eventRepository) {
         this.boxRepository = boxRepository;
+        this.eventRepository = eventRepository;
     }
 
     public void registerBox(CollectionBoxRequest boxRequest) {
@@ -44,9 +49,25 @@ public class CollectionBoxService {
     }
 
     public void unregisterBox(Long id) {
-        CollectionBox box = this.boxRepository.findById(id).orElseThrow(() -> new CollectionBoxNotFound("Collection Box not found"));
+        CollectionBox box = this.boxRepository.findById(id).orElseThrow(() -> new CollectionBoxNotFoundException("Collection Box not found"));
 
         this.boxRepository.delete(box);
+    }
+
+    public void assignBoxToEvent(Long boxId, Long eventId) {
+        CollectionBox box = this.boxRepository.findById(boxId).orElseThrow(() -> new CollectionBoxNotFoundException("Collection Box not found"));
+
+        FundraisingEvent event = this.eventRepository.findById(eventId).orElseThrow(() -> new FundraisingEventNotFound("Fundraising event not found"));
+
+        if(this.sumBoxAmount(box).compareTo(BigDecimal.ZERO) != 0)  {
+            throw new IllegalStateException("Cannot assign not empty collection box");
+        }
+        if(box.getEvent() != null) {
+            throw new IllegalStateException("Collection box is already assigned to fundraising event");
+        }
+
+        box.setEvent(event);
+        this.boxRepository.save(box);
     }
 
     public BigDecimal sumBoxAmount(CollectionBox box) {

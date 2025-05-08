@@ -1,7 +1,7 @@
 package com.sii.charityBoxes.exceptions;
 
-public class CollectionBoxNotFound extends RuntimeException {
-    public CollectionBoxNotFound(String message) {
+public class CollectionBoxNotFoundException extends RuntimeException {
+    public CollectionBoxNotFoundException(String message) {
         super(message);
     }
 }
