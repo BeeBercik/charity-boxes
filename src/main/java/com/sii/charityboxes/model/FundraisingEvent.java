@@ -13,7 +13,10 @@ public class FundraisingEvent {
     private Long id;
 
     private String name;
+
+    @Enumerated(EnumType.STRING)
     private Currency currency;
+
     private BigDecimal account;
 
     public FundraisingEvent() {
