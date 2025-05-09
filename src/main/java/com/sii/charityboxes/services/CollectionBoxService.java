@@ -83,6 +83,25 @@ public class CollectionBoxService {
         this.boxRepository.save(box);
     }
 
+    public void transferBoxMoney(Long boxId) {
+        CollectionBox box = this.boxRepository.findById(boxId).orElseThrow(() -> new CollectionBoxNotFoundException("Collection Box not found"));
+
+        if(box.getEvent() == null) {
+            throw new FundraisingEventNotFound("Collection box is not assigned to any fundraising event");
+        }
+
+        BigDecimal sum = this.sumBoxAmount(box);
+        if(sum.compareTo(BigDecimal.ZERO) == 0) {
+            throw new IllegalStateException("Cannot transfer money from empty box");
+        }
+        box.getEvent().setAccount(
+                box.getEvent().getAccount().add(sum));
+        box.getAmount().clear();
+
+        this.eventRepository.save(box.getEvent());
+        this.boxRepository.save(box);
+    }
+
     public BigDecimal sumBoxAmount(CollectionBox box) {
         BigDecimal total = BigDecimal.ZERO;
 

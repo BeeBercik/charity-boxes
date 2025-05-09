@@ -54,4 +54,9 @@ public class CollectionBoxController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @PutMapping("/{id}/transfer")
+    public ResponseEntity<?> transferBoxMoney(@PathVariable(name = "id") Long id) {
+        this.boxService.transferBoxMoney(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }
