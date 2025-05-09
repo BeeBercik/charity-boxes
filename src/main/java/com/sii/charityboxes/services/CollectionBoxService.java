@@ -2,6 +2,7 @@ package com.sii.charityBoxes.services;
 
 import com.sii.charityBoxes.dto.CollectionBoxRequest;
 import com.sii.charityBoxes.dto.CollectionBoxResponse;
+import com.sii.charityBoxes.dto.MoneyRequest;
 import com.sii.charityBoxes.exceptions.CollectionBoxNotFoundException;
 import com.sii.charityBoxes.exceptions.FundraisingEventNotFound;
 import com.sii.charityBoxes.model.CollectionBox;
@@ -9,6 +10,7 @@ import com.sii.charityBoxes.model.Currency;
 import com.sii.charityBoxes.model.FundraisingEvent;
 import com.sii.charityBoxes.repositories.CollectionBoxesRepository;
 import com.sii.charityBoxes.repositories.FundraisingEventRepository;
+import org.apache.juli.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -67,6 +69,25 @@ public class CollectionBoxService {
         }
 
         box.setEvent(event);
+        this.boxRepository.save(box);
+    }
+
+    public void putMoneyInsideBox(Long boxId, MoneyRequest moneyRequest) {
+        CollectionBox box = this.boxRepository.findById(boxId).orElseThrow(() -> new CollectionBoxNotFoundException("Collection Box not found"));
+
+        Map<Currency, BigDecimal> amount = box.getAmount();
+        for(Map.Entry<Currency, BigDecimal> pair : amount.entrySet()) {
+            Currency currency = pair.getKey();
+            BigDecimal value = pair.getValue();
+            if(currency.equals(moneyRequest.currency())) {
+                value = value.add(moneyRequest.money());
+                pair.setValue(value);
+            } else {
+                amount.put(moneyRequest.currency(), moneyRequest.money());
+            }
+        }
+
+        box.setAmount(amount);
         this.boxRepository.save(box);
     }
 

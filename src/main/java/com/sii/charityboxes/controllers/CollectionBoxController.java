@@ -2,6 +2,7 @@ package com.sii.charityBoxes.controllers;
 
 import com.sii.charityBoxes.dto.CollectionBoxRequest;
 import com.sii.charityBoxes.dto.CollectionBoxResponse;
+import com.sii.charityBoxes.dto.MoneyRequest;
 import com.sii.charityBoxes.services.CollectionBoxService;
 import org.apache.tomcat.util.http.parser.HttpParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,13 @@ public class CollectionBoxController {
     public ResponseEntity<?> assignBoxToEvent(@PathVariable(name = "boxId") Long boxId,
                                               @PathVariable(name = "eventId") Long eventId) {
         this.boxService.assignBoxToEvent(boxId, eventId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PostMapping("/{id}/putMoney")
+    public ResponseEntity<?> putMoneyInsideBox(@PathVariable(name = "id") Long id,
+                                               @RequestBody MoneyRequest moneyRequest) {
+        this.boxService.putMoneyInsideBox(id, moneyRequest);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
