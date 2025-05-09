@@ -5,6 +5,7 @@ import com.sii.charityBoxes.dto.CollectionBoxResponse;
 import com.sii.charityBoxes.dto.MoneyRequest;
 import com.sii.charityBoxes.exceptions.CollectionBoxNotFoundException;
 import com.sii.charityBoxes.exceptions.FundraisingEventNotFound;
+import com.sii.charityBoxes.exceptions.InvalidCurrencyException;
 import com.sii.charityBoxes.model.CollectionBox;
 import com.sii.charityBoxes.model.Currency;
 import com.sii.charityBoxes.model.FundraisingEvent;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,14 +35,17 @@ public class CollectionBoxService {
 
     public void registerBox(CollectionBoxRequest boxRequest) {
         HashMap<Currency, BigDecimal> currencies = new HashMap<>();
-        for(Currency c : boxRequest.currencies()) {
-            currencies.put(c, BigDecimal.ZERO);
+        for(String c : boxRequest.currencies()) {
+            Currency currency;
+            try {
+                 currency = Currency.valueOf(c);
+            } catch (IllegalArgumentException e) {
+                throw new InvalidCurrencyException(c + " currency not supported");
+            }
+            currencies.put(currency, BigDecimal.ZERO);
         }
 
-        this.boxRepository.save(new CollectionBox(
-                null,
-                currencies
-        ));
+        this.boxRepository.save(new CollectionBox(null, currencies));
     }
 
     public List<CollectionBoxResponse> getAllBoxes() {

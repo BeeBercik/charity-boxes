@@ -2,6 +2,8 @@ package com.sii.charityBoxes.services;
 
 import com.sii.charityBoxes.dto.FundraisingEventRequest;
 import com.sii.charityBoxes.dto.FundraisingEventResponse;
+import com.sii.charityBoxes.exceptions.InvalidCurrencyException;
+import com.sii.charityBoxes.model.Currency;
 import com.sii.charityBoxes.model.FundraisingEvent;
 import com.sii.charityBoxes.repositories.FundraisingEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +45,16 @@ public class FundraisingEventService {
     }
 
     public FundraisingEvent fromRequestToEntity(FundraisingEventRequest eventRequest) {
+        Currency currency;
+        try {
+            currency = Currency.valueOf(eventRequest.currency());
+        } catch (IllegalArgumentException e) {
+            throw new InvalidCurrencyException(eventRequest.currency() + " currency not supported");
+        }
+
         return new FundraisingEvent(
                 eventRequest.name(),
-                eventRequest.currency(),
+                currency,
                 BigDecimal.ZERO
         );
     }

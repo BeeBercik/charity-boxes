@@ -4,5 +4,5 @@ import com.sii.charityBoxes.model.Currency;
 
 import java.util.List;
 
-public record CollectionBoxRequest(List<Currency> currencies) {
+public record CollectionBoxRequest(List<String> currencies) {
 }
