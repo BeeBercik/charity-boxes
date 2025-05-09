@@ -75,19 +75,11 @@ public class CollectionBoxService {
     public void putMoneyInsideBox(Long boxId, MoneyRequest moneyRequest) {
         CollectionBox box = this.boxRepository.findById(boxId).orElseThrow(() -> new CollectionBoxNotFoundException("Collection Box not found"));
 
-        Map<Currency, BigDecimal> amount = box.getAmount();
-        for(Map.Entry<Currency, BigDecimal> pair : amount.entrySet()) {
-            Currency currency = pair.getKey();
-            BigDecimal value = pair.getValue();
-            if(currency.equals(moneyRequest.currency())) {
-                value = value.add(moneyRequest.money());
-                pair.setValue(value);
-            } else {
-                amount.put(moneyRequest.currency(), moneyRequest.money());
-            }
-        }
+        box.getAmount().merge(
+                moneyRequest.currency(),
+                moneyRequest.money(),
+                (oldVal, newVal) -> oldVal.add(newVal));
 
-        box.setAmount(amount);
         this.boxRepository.save(box);
     }
 
