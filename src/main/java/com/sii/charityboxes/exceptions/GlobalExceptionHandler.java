@@ -2,6 +2,7 @@ package com.sii.charityBoxes.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -24,7 +25,16 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(InvalidCurrencyException.class)
-    public ResponseEntity<?> hadnleInvalidCurrencyException(InvalidCurrencyException e) {
+    public ResponseEntity<?> handleInvalidCurrencyException(InvalidCurrencyException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        String errorMsg = e.getBindingResult().getFieldErrors().stream()
+                .map(fe -> fe.getField() + " - " + fe.getDefaultMessage())
+                .findFirst()
+                .orElse("Error");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMsg);
     }
 }
