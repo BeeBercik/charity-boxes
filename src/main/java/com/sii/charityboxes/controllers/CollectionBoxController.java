@@ -4,6 +4,7 @@ import com.sii.charityBoxes.dto.CollectionBoxRequest;
 import com.sii.charityBoxes.dto.CollectionBoxResponse;
 import com.sii.charityBoxes.dto.MoneyRequest;
 import com.sii.charityBoxes.services.CollectionBoxService;
+import jakarta.validation.Valid;
 import org.apache.tomcat.util.http.parser.HttpParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class CollectionBoxController {
     }
 
     @PostMapping
-    public ResponseEntity<?> registerBox(@RequestBody CollectionBoxRequest boxRequest) {
+    public ResponseEntity<?> registerBox(@Valid @RequestBody CollectionBoxRequest boxRequest) {
         this.boxService.registerBox(boxRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -49,7 +50,7 @@ public class CollectionBoxController {
 
     @PostMapping("/{id}/putMoney")
     public ResponseEntity<?> putMoneyInsideBox(@PathVariable(name = "id") Long id,
-                                               @RequestBody MoneyRequest moneyRequest) {
+                                               @Valid @RequestBody MoneyRequest moneyRequest) {
         this.boxService.putMoneyInsideBox(id, moneyRequest);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
