@@ -1,11 +1,14 @@
 package com.sii.charityBoxes.controllers;
 
 import com.sii.charityBoxes.dto.FundraisingEventRequest;
+import com.sii.charityBoxes.dto.FundraisingEventResponse;
 import com.sii.charityBoxes.services.FundraisingEventService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/fundraising-events")
@@ -24,7 +27,7 @@ public class FundraisingEventController {
     }
 
     @GetMapping("/report")
-    public ResponseEntity<?> getFinancialReport() {
+    public ResponseEntity<List<FundraisingEventResponse>> getFinancialReport() {
         return ResponseEntity.status(HttpStatus.OK).body(this.eventService.getFinancialReport());
     }
 }
