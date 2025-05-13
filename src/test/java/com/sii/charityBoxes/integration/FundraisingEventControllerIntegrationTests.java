@@ -2,6 +2,7 @@ package com.sii.charityBoxes.integration;
 
 import com.sii.charityBoxes.dto.FundraisingEventRequest;
 import com.sii.charityBoxes.services.FundraisingEventService;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,14 +17,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 @ActiveProfiles("test")
-public class FundraisingEventControllerIT {
+public class FundraisingEventControllerIntegrationTests {
 
     private MockMvc mockMvc;
     private final FundraisingEventService eventService;
 
     @Autowired
-    public FundraisingEventControllerIT(FundraisingEventService eventService, MockMvc mockMvc) {
+    public FundraisingEventControllerIntegrationTests(FundraisingEventService eventService, MockMvc mockMvc) {
         this.eventService = eventService;
         this.mockMvc = mockMvc;
     }

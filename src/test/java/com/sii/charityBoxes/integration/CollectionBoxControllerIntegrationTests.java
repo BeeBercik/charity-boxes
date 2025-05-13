@@ -7,7 +7,6 @@ import com.sii.charityBoxes.model.Currency;
 import com.sii.charityBoxes.model.FundraisingEvent;
 import com.sii.charityBoxes.repositories.CollectionBoxRepository;
 import com.sii.charityBoxes.repositories.FundraisingEventRepository;
-import com.sii.charityBoxes.services.CollectionBoxService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +29,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @ActiveProfiles("test")
-public class CollectionBoxControllerIT {
+public class CollectionBoxControllerIntegrationTests {
 
     private final MockMvc mockMvc;
     private final CollectionBoxRepository boxRepository;
     private final FundraisingEventRepository eventRepository;
 
     @Autowired
-    public CollectionBoxControllerIT(MockMvc mockMvc, CollectionBoxRepository boxRepository, FundraisingEventRepository eventRepository) {
+    public CollectionBoxControllerIntegrationTests(MockMvc mockMvc, CollectionBoxRepository boxRepository, FundraisingEventRepository eventRepository) {
         this.mockMvc = mockMvc;
         this.boxRepository = boxRepository;
         this.eventRepository = eventRepository;
