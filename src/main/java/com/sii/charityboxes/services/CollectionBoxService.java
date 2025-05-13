@@ -9,14 +9,12 @@ import com.sii.charityBoxes.exceptions.InvalidCurrencyException;
 import com.sii.charityBoxes.model.CollectionBox;
 import com.sii.charityBoxes.model.Currency;
 import com.sii.charityBoxes.model.FundraisingEvent;
-import com.sii.charityBoxes.repositories.CollectionBoxesRepository;
+import com.sii.charityBoxes.repositories.CollectionBoxRepository;
 import com.sii.charityBoxes.repositories.FundraisingEventRepository;
-import org.apache.juli.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,11 +22,11 @@ import java.util.Map;
 @Service
 public class CollectionBoxService {
 
-    private final CollectionBoxesRepository boxRepository;
+    private final CollectionBoxRepository boxRepository;
     private final FundraisingEventRepository eventRepository;
 
     @Autowired
-    public CollectionBoxService(CollectionBoxesRepository boxRepository, FundraisingEventRepository eventRepository) {
+    public CollectionBoxService(CollectionBoxRepository boxRepository, FundraisingEventRepository eventRepository) {
         this.boxRepository = boxRepository;
         this.eventRepository = eventRepository;
     }

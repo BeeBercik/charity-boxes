@@ -9,7 +9,7 @@ import com.sii.charityBoxes.exceptions.InvalidCurrencyException;
 import com.sii.charityBoxes.model.CollectionBox;
 import com.sii.charityBoxes.model.Currency;
 import com.sii.charityBoxes.model.FundraisingEvent;
-import com.sii.charityBoxes.repositories.CollectionBoxesRepository;
+import com.sii.charityBoxes.repositories.CollectionBoxRepository;
 import com.sii.charityBoxes.repositories.FundraisingEventRepository;
 import com.sii.charityBoxes.services.CollectionBoxService;
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ import static org.mockito.Mockito.*;
 public class CollectionBoxServiceTests {
 
     @Mock
-    private CollectionBoxesRepository boxRepository;
+    private CollectionBoxRepository boxRepository;
 
     @Mock
     private FundraisingEventRepository eventRepository;
